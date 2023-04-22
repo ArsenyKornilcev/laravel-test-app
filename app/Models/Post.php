@@ -10,14 +10,18 @@ class Post extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title',
-        'description',
-        'preview',
-        'thumbnail'
+        "title",
+        "description",
+        "preview",
+        "thumbnail",
     ];
+
+    // protected $casts = [
+    //     "thumbnail" => FileUploadCast::class,
+    // ];
 
     public function comments()
     {
-        $this->hasMany(Comment::class)->orderBy('created_at');
+        return $this->hasMany(Comment::class)->orderBy("created_at");
     }
 }
