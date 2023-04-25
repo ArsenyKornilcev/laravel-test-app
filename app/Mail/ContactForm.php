@@ -33,9 +33,7 @@ class ContactForm extends Mailable
     public function envelope()
     {
         return new Envelope(
-            from: 'sienia.korniltsiev@yandex.ru',
-            to: 'sienia.korniltsiev@yandex.ru',
-            subject: 'Contact Form',
+            subject: 'Contact Form'
         );
     }
 

@@ -17,6 +17,11 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
+    public function showForgotForm()
+    {
+        return view('auth.forgot');
+    }
+
     public function register(Request $request)
     {
         $data = $request->validate([
@@ -57,5 +62,10 @@ class AuthController extends Controller
         }
 
         return redirect(route('login'))->withErrors(['email' => 'Пользователь не найден, либо данные введены не правильно']);
+    }
+
+    public function forgot(Request $request)
+    {
+        
     }
 }
