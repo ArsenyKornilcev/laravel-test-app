@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DTO\PostForm;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\PostFormRequest;
+use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +19,11 @@ class PostController extends Controller
      */
     public function index()
     {
-        return view('admin.posts.index');
+        $posts = Post::orderBy("created_at", "DESC")->paginate(3);
+
+        return view("admin.posts.index", [
+            "posts" => $posts,
+        ]);
     }
 
     /**
@@ -24,62 +33,59 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view("admin.posts.create", []);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  PostFormRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostFormRequest $request)
     {
-        //
-    }
+        Post::create($request->validated());
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        return redirect(route("admin.posts.index"));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        //
+        return view("admin.posts.create", [
+            "post" => $post,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  PostFormRequest  $request
+     * @param  Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PostFormRequest $request, Post $post)
     {
-        //
+        $post->update($request->validated());
+
+        return redirect(route("admin.posts.index"));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        //
+        $post->delete();
+
+        return redirect(route("admin.posts.index"));
     }
 }
